@@ -1,0 +1,2803 @@
+/* ============================================================
+   Expenzo — iOS 26 Liquid Glass Theme  v5
+   Deep-dark vibrancy · Frosted glass tiles · Animated ambient
+   ============================================================ */
+
+/* Importing Inter from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── Design Tokens ─── */
+:root {
+  --violet: #7c3aed;
+  --purple: #9333ea;
+  --indigo: #4f46e5;
+  --cyan: #06b6d4;
+  --teal: #14b8a6;
+  --orange: #f97316;
+  --rose: #e11d48;
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  --sky: #0ea5e9;
+
+  --accent: #818cf8;
+  --accent-2: #38bdf8;
+  --accent-glow: rgba(129, 140, 248, 0.40);
+  --cyan-glow: rgba(56, 189, 248, 0.30);
+
+  /* ── Liquid Glass tile surfaces ── */
+  --liq-tile-bg: rgba(255, 255, 255, 0.10);
+  --liq-tile-bg-h: rgba(255, 255, 255, 0.17);
+  --liq-tile-border: rgba(255, 255, 255, 0.24);
+  --liq-tile-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.38),
+    0 2px 8px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  --liq-blur: blur(40px) saturate(180%);
+  --liq-text: rgba(255, 255, 255, 0.95);
+  --liq-text-sub: rgba(255, 255, 255, 0.55);
+  --liq-icon-bg: rgba(255, 255, 255, 0.18);
+
+  /* Legacy aliases so older class names still work */
+  --glass-bg: rgba(255, 255, 255, 0.10);
+  --glass-bg-hover: rgba(255, 255, 255, 0.17);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-border-h: rgba(255, 255, 255, 0.38);
+  --body-bg: #06071a;
+  --surface-1: rgba(255, 255, 255, 0.08);
+  --surface-2: rgba(255, 255, 255, 0.14);
+  --surface-nav: rgba(10, 8, 32, 0.62);
+  --surface-drawer: rgba(10, 8, 32, 0.97);
+
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.60);
+  --text-muted: rgba(255, 255, 255, 0.35);
+
+  --shadow-depth:
+    0 2px 8px rgba(0, 0, 0, 0.32),
+    0 8px 24px rgba(0, 0, 0, 0.26),
+    0 20px 48px rgba(0, 0, 0, 0.22);
+  --shadow-float:
+    0 8px 24px rgba(0, 0, 0, 0.38),
+    0 24px 56px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --shadow-btn:
+    0 4px 12px rgba(129, 140, 248, 0.32),
+    0 8px 32px rgba(129, 140, 248, 0.24);
+
+  --blur-sm: blur(16px);
+  --blur-md: blur(32px);
+  --blur-lg: blur(52px);
+
+  --radius-sm: 16px;
+  --radius-md: 22px;
+  --radius-lg: 30px;
+  --radius-xl: 40px;
+  --radius-pill: 999px;
+
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+/* ─── Reset ─── */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.95);
+  min-height: 100vh;
+  background: #030b18;
+  background-image:
+    radial-gradient(ellipse 90% 70% at 0% 0%, rgba(6, 182, 212, 0.55) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 100% 0%, rgba(56, 189, 248, 0.45) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 70% at 50% 110%, rgba(16, 185, 129, 0.42) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 50% at 15% 80%, rgba(8, 145, 178, 0.38) 0%, transparent 50%),
+    radial-gradient(ellipse 55% 55% at 85% 75%, rgba(14, 165, 233, 0.32) 0%, transparent 50%),
+    linear-gradient(160deg, #020d1a 0%, #03111f 35%, #021a28 65%, #030f1c 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Ambient glow orbs */
+body::before {
+  content: '';
+  position: fixed;
+  width: 750px;
+  height: 750px;
+  top: -220px;
+  left: -220px;
+  background: radial-gradient(circle, rgba(100, 60, 255, 0.32) 0%, transparent 65%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbA 20s ease-in-out infinite alternate;
+  border-radius: 50%;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  width: 650px;
+  height: 650px;
+  bottom: -180px;
+  right: -180px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.28) 0%, transparent 65%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbB 16s ease-in-out infinite alternate;
+  border-radius: 50%;
+}
+
+@keyframes orbA {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(70px, 50px) scale(1.14);
+  }
+}
+
+@keyframes orbB {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(-50px, -35px) scale(1.12);
+  }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Third ambient orb via pseudo on root */
+#root::before {
+  content: '';
+  position: fixed;
+  width: 520px;
+  height: 520px;
+  top: 42%;
+  left: 58%;
+  background: radial-gradient(circle, rgba(170, 60, 210, 0.22) 0%, transparent 65%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbC 22s ease-in-out infinite alternate;
+  border-radius: 50%;
+}
+
+@keyframes orbC {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(-60px, 40px) scale(1.10);
+  }
+}
+
+/* ─── Auth Page: Ken Burns animated photo background ─── */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1.08) translate(0%, 0%);
+  }
+
+  25% {
+    transform: scale(1.13) translate(-1.5%, 1%);
+  }
+
+  50% {
+    transform: scale(1.10) translate(1.2%, -1%);
+  }
+
+  75% {
+    transform: scale(1.15) translate(-1%, 1.8%);
+  }
+
+  100% {
+    transform: scale(1.08) translate(0%, 0%);
+  }
+}
+
+@keyframes panelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes formSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Auth split layout wrapper */
+.auth-split {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Left photo panel — overflow:hidden clips the Ken Burns zoom */
+.auth-left-panel {
+  flex: 1.4;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  animation: panelFadeIn 0.8s var(--ease) both;
+}
+
+/* Animated photo layer — inset:-8% gives room for zoom without white edges */
+.auth-left-panel::before {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  background-image: var(--auth-bg);
+  background-size: cover;
+  background-position: center;
+  animation: kenBurns 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Dual-gradient overlay: left-to-right + bottom-to-top for text contrast */
+.auth-left-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(2, 10, 24, 0.80) 0%, rgba(2, 10, 24, 0.30) 65%, rgba(2, 10, 24, 0.12) 100%),
+    linear-gradient(to top, rgba(2, 10, 24, 0.90) 0%, transparent 55%);
+  z-index: 1;
+}
+
+/* Inner content wrapper — sits above both pseudo overlays */
+.auth-left-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3.5rem 3rem;
+  height: 100%;
+  min-height: 100vh;
+}
+
+/* Right dark-glass form panel */
+.auth-right-panel {
+  width: 400px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2.2rem;
+  background: rgba(3, 10, 28, 0.85) !important;
+  backdrop-filter: blur(52px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(52px) saturate(200%) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: -14px 0 64px rgba(0, 0, 0, 0.60), inset 1px 0 0 rgba(255, 255, 255, 0.07) !important;
+  animation: formSlideIn 0.8s 0.15s var(--ease) both;
+}
+
+/* ============================================================
+   MICRO-ANIMATIONS
+   ============================================================ */
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px)
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0)
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatUp {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-12px)
+  }
+}
+
+@keyframes floatDiag {
+
+  0%,
+  100% {
+    transform: translate(0, 0)
+  }
+
+  50% {
+    transform: translate(8px, -8px)
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg)
+  }
+
+  to {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.35
+  }
+
+  100% {
+    transform: scale(2.8);
+    opacity: 0
+  }
+}
+
+@keyframes glowBreath {
+
+  0%,
+  100% {
+    opacity: 0.6
+  }
+
+  50% {
+    opacity: 1
+  }
+}
+
+@keyframes blobMorph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  33% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+
+  66% {
+    border-radius: 40% 60% 30% 70% / 40% 70% 60% 30%;
+  }
+
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(-40px) translateX(15px) scale(1.1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes logoGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 50px rgba(6, 182, 212, 0.2)
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(124, 58, 237, 0.7), 0 0 80px rgba(6, 182, 212, 0.4)
+  }
+}
+
+@keyframes logoSpin {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.pressable {
+  transition: transform 0.14s var(--spring);
+}
+
+.pressable:active {
+  transform: scale(0.96);
+}
+
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-host:active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.16) 0%, transparent 70%);
+  border-radius: inherit;
+  animation: ripple 0.5s var(--ease) forwards;
+  pointer-events: none;
+}
+
+/* ============================================================
+   AUTH PAGE — Animated branding + background
+   ============================================================ */
+.register-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating morphing blobs */
+.auth-blobs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-blob {
+  position: absolute;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: blobMorph 18s ease-in-out infinite, floatUp 12s ease-in-out infinite;
+  opacity: 0.18;
+  filter: blur(60px);
+}
+
+.blob-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -80px;
+  background: #7c3aed;
+  animation-delay: 0s, 0s;
+  animation-duration: 20s, 14s;
+}
+
+.blob-2 {
+  width: 350px;
+  height: 350px;
+  top: 10%;
+  right: -80px;
+  background: #06b6d4;
+  animation-delay: -5s, -3s;
+  animation-duration: 22s, 16s;
+}
+
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  bottom: 5%;
+  left: 10%;
+  background: #f97316;
+  animation-delay: -10s, -7s;
+  animation-duration: 18s, 12s;
+}
+
+.blob-4 {
+  width: 280px;
+  height: 280px;
+  bottom: -60px;
+  right: 15%;
+  background: #10b981;
+  animation-delay: -7s, -5s;
+  animation-duration: 24s, 18s;
+}
+
+.blob-5 {
+  width: 250px;
+  height: 250px;
+  top: 40%;
+  left: 50%;
+  background: #9333ea;
+  animation-delay: -13s, -9s;
+  animation-duration: 16s, 11s;
+}
+
+
+
+/* Floating particles */
+.auth-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: particleDrift ease-in-out infinite;
+  opacity: 0.55;
+}
+
+/* Spread particles across the canvas */
+.p-0 {
+  top: 10%;
+  left: 12%;
+  background: #7c3aed;
+  animation-duration: 9s;
+  animation-delay: 0s;
+  width: 8px;
+  height: 8px;
+}
+
+.p-1 {
+  top: 20%;
+  left: 75%;
+  background: #06b6d4;
+  animation-duration: 11s;
+  animation-delay: 1.5s;
+}
+
+.p-2 {
+  top: 35%;
+  left: 25%;
+  background: #f97316;
+  animation-duration: 13s;
+  animation-delay: 3s;
+  width: 5px;
+  height: 5px;
+}
+
+.p-3 {
+  top: 50%;
+  left: 88%;
+  background: #10b981;
+  animation-duration: 8s;
+  animation-delay: 0.8s;
+}
+
+.p-4 {
+  top: 65%;
+  left: 15%;
+  background: #9333ea;
+  animation-duration: 14s;
+  animation-delay: 2s;
+  width: 10px;
+  height: 10px;
+}
+
+.p-5 {
+  top: 75%;
+  left: 50%;
+  background: #e11d48;
+  animation-duration: 10s;
+  animation-delay: 4s;
+  width: 7px;
+  height: 7px;
+}
+
+.p-6 {
+  top: 15%;
+  left: 42%;
+  background: #7c3aed;
+  animation-duration: 12s;
+  animation-delay: 1s;
+}
+
+.p-7 {
+  top: 80%;
+  left: 80%;
+  background: #f59e0b;
+  animation-duration: 15s;
+  animation-delay: 5s;
+  width: 5px;
+  height: 5px;
+}
+
+.p-8 {
+  top: 45%;
+  left: 5%;
+  background: #06b6d4;
+  animation-duration: 9s;
+  animation-delay: 2.5s;
+}
+
+.p-9 {
+  top: 90%;
+  left: 30%;
+  background: #7c3aed;
+  animation-duration: 11s;
+  animation-delay: 0.5s;
+  width: 9px;
+  height: 9px;
+}
+
+.p-10 {
+  top: 5%;
+  left: 60%;
+  background: #10b981;
+  animation-duration: 13s;
+  animation-delay: 3.5s;
+  width: 6px;
+  height: 6px;
+}
+
+.p-11 {
+  top: 60%;
+  left: 65%;
+  background: #9333ea;
+  animation-duration: 10s;
+  animation-delay: 6s;
+}
+
+/* App branding */
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+  animation: fadeScaleIn 0.6s var(--spring);
+}
+
+.auth-logo-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.15), 0 0 0 12px rgba(6, 182, 212, 0.08);
+  animation: logoGlow 3s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Spinning shimmer ring */
+.auth-logo-ring::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: logoSpin 4s linear infinite;
+}
+
+.auth-logo-icon {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.auth-app-name {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.auth-app-tagline {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  -webkit-text-fill-color: var(--text-muted);
+}
+
+/* Auth Card — iOS 26 deep liquid glass */
+.auth-card {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(52px) saturate(200%);
+  -webkit-backdrop-filter: blur(52px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.42),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  padding: 2.5rem 2.2rem;
+  width: 100%;
+  max-width: 430px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  animation: fadeScaleIn 0.5s 0.1s var(--spring) both;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.50), transparent);
+  z-index: 1;
+}
+
+/* Liquid shimmer sweep */
+.auth-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  animation: shimmerSweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmerSweep {
+
+  0%,
+  70% {
+    left: -100%
+  }
+
+  100% {
+    left: 160%
+  }
+}
+
+.auth-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #c7d2fe 0%, #67e8f9 60%, #a5f3fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.3rem;
+}
+
+.auth-card .ant-form-item-label>label {
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.auth-card .ant-input,
+.auth-card .ant-input-affix-wrapper {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: var(--radius-md) !important;
+  color: rgba(255, 255, 255, 0.90) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.12s;
+  backdrop-filter: blur(16px);
+}
+
+.auth-card .ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.auth-card .ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.auth-card .ant-input:focus,
+.auth-card .ant-input-affix-wrapper-focused {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+.auth-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #6366f1 0%, #38bdf8 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: var(--radius-pill) !important;
+  height: 48px !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  color: #fff !important;
+  box-shadow:
+    0 4px 20px rgba(99, 102, 241, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+  transition: transform 0.15s var(--spring), box-shadow 0.2s !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.60),
+    0 2px 8px rgba(56, 189, 248, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38) !important;
+}
+
+.auth-btn:active {
+  transform: scale(0.97);
+}
+
+.auth-link {
+  color: rgba(165, 180, 252, 0.90) !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  color: rgba(103, 232, 249, 0.95) !important;
+}
+
+/* ============================================================
+   NAVBAR — iOS 26 Liquid Glass floating bar
+   ============================================================ */
+.glass-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10, 8, 32, 0.58) !important;
+  backdrop-filter: blur(48px) saturate(200%);
+  -webkit-backdrop-filter: blur(48px) saturate(200%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 24px rgba(0, 0, 0, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+.brand-name {
+  font-weight: 900;
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-tagline {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted) !important;
+  -webkit-text-fill-color: var(--text-muted);
+}
+
+.avatar-glow .ant-avatar {
+  border: 2px solid rgba(124, 58, 237, 0.38);
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.28);
+  transition: box-shadow 0.25s, transform 0.15s var(--spring);
+}
+
+.avatar-glow .ant-avatar:hover {
+  box-shadow: 0 0 28px rgba(124, 58, 237, 0.55);
+  transform: scale(1.07);
+}
+
+.avatar-glow .ant-avatar:active {
+  transform: scale(0.93);
+}
+
+/* ============================================================
+   FOOTER — iOS 26 Liquid Glass
+   ============================================================ */
+.glass-footer {
+  background: rgba(10, 8, 32, 0.50) !important;
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 1rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.glass-footer h6 {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   GLASS CARD — iOS 26 Liquid tile
+   ============================================================ */
+.glass-card {
+  background: var(--liq-tile-bg);
+  backdrop-filter: var(--liq-blur);
+  -webkit-backdrop-filter: var(--liq-blur);
+  border: 1px solid var(--liq-tile-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--liq-tile-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.18s var(--spring);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.glass-card:hover {
+  background: var(--liq-tile-bg-h);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: var(--shadow-float);
+  transform: translateY(-3px) scale(1.01);
+}
+
+/* ============================================================
+   ANT DESIGN CARDS — Liquid glass tiles
+   ============================================================ */
+.ant-card,
+.card {
+  background: var(--liq-tile-bg) !important;
+  backdrop-filter: var(--liq-blur);
+  -webkit-backdrop-filter: var(--liq-blur);
+  border: 1px solid var(--liq-tile-border) !important;
+  border-radius: var(--radius-xl) !important;
+  box-shadow: var(--liq-tile-shadow) !important;
+  color: var(--liq-text) !important;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.18s var(--spring) !important;
+}
+
+/* Top shimmer line */
+.ant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.20), transparent);
+}
+
+/* Inner top shine area */
+.ant-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.ant-card:hover {
+  transform: translateY(-3px) scale(1.01) !important;
+  box-shadow: var(--shadow-float) !important;
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
+.ant-card .ant-card-head {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: var(--liq-text) !important;
+}
+
+.ant-card .ant-card-head-title {
+  color: var(--liq-text) !important;
+  font-weight: 700;
+}
+
+.ant-card .ant-card-body {
+  color: var(--liq-text) !important;
+}
+
+.card-header {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--liq-text) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================================
+   FILTERS BAR — Liquid glass pill
+   ============================================================ */
+.content {
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: var(--liq-tile-bg) !important;
+  backdrop-filter: var(--liq-blur);
+  -webkit-backdrop-filter: var(--liq-blur);
+  border: 1px solid var(--liq-tile-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--liq-tile-shadow);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.filters::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+}
+
+.filters::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.filters:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: var(--shadow-float);
+}
+
+.switch-icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  backdrop-filter: blur(12px);
+}
+
+.switch-icons svg {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s, transform 0.15s var(--spring);
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.switch-icons svg:active {
+  transform: scale(0.84);
+}
+
+.active-icon {
+  color: rgba(255, 255, 255, 0.95) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-radius: 10px;
+}
+
+.inactive-icon {
+  color: rgba(255, 255, 255, 0.38) !important;
+}
+
+/* ============================================================
+   TABLE — iOS 26 Liquid glass tile
+   ============================================================ */
+.ant-table {
+  background: transparent !important;
+  border-radius: var(--radius-xl) !important;
+  overflow: hidden;
+}
+
+.ant-table-container {
+  background: transparent !important;
+}
+
+.ant-table-thead>tr>th {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.70) !important;
+  font-weight: 700 !important;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: none !important;
+}
+
+.ant-table-tbody>tr>td {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  transition: background 0.18s;
+}
+
+.ant-table-tbody>tr:nth-child(even)>td {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.ant-table-tbody>tr:hover>td {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Pagination */
+.ant-pagination-item {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: var(--radius-md) !important;
+  transition: background 0.2s, transform 0.12s var(--spring), box-shadow 0.2s !important;
+}
+
+.ant-pagination-item a {
+  color: rgba(255, 255, 255, 0.70) !important;
+}
+
+.ant-pagination-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: scale(1.09);
+}
+
+.ant-pagination-item:active {
+  transform: scale(0.93);
+}
+
+.ant-pagination-item-active {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.12) !important;
+}
+
+.ant-pagination-item-active a {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 700;
+}
+
+.ant-pagination-prev button,
+.ant-pagination-next button {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+
+.ant-pagination-prev:hover,
+.ant-pagination-next:hover {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* ============================================================
+   INPUTS & SELECTS — iOS 26 dark glass
+   ============================================================ */
+.ant-select-selector {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.20) !important;
+  color: rgba(255, 255, 255, 0.90) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  backdrop-filter: blur(16px);
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.10) !important;
+}
+
+.ant-select-selection-item {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.ant-select-selection-placeholder {
+  color: rgba(255, 255, 255, 0.40) !important;
+}
+
+.ant-select-arrow {
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.ant-select-clear {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.ant-select-dropdown {
+  background: rgba(14, 12, 38, 0.88) !important;
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.ant-select-item {
+  color: rgba(255, 255, 255, 0.70) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: background 0.15s;
+}
+
+.ant-select-item-option-selected,
+.ant-select-item-option-active {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.ant-select-multiple .ant-select-selection-item {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: rgba(255, 255, 255, 0.90) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.ant-select-multiple .ant-select-selection-item-remove {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-picker {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.20) !important;
+  color: rgba(255, 255, 255, 0.90) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(16px);
+}
+
+.ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.ant-input:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-picker-input>input {
+  color: rgba(255, 255, 255, 0.88) !important;
+  background: transparent !important;
+}
+
+.ant-picker-input>input::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.ant-picker-suffix {
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.ant-picker-dropdown {
+  background: rgba(14, 12, 38, 0.90) !important;
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+.ant-picker-panel {
+  background: transparent !important;
+}
+
+.ant-picker-cell-in-view .ant-picker-cell-inner {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: var(--violet) !important;
+  color: #fff !important;
+}
+
+.ant-picker-header button {
+  color: var(--text-secondary) !important;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%) !important;
+  border: none !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: var(--shadow-btn) !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  transition: transform 0.15s var(--spring), box-shadow 0.2s !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.45) !important;
+}
+
+.ant-btn-primary:active {
+  transform: scale(0.96);
+}
+
+.ant-btn:not(.ant-btn-primary):not(.ant-btn-dangerous) {
+  background: var(--surface-2) !important;
+  border: 1.5px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.12s var(--spring) !important;
+}
+
+.ant-btn:not(.ant-btn-primary):not(.ant-btn-dangerous):hover {
+  background: rgba(124, 58, 237, 0.08) !important;
+  border-color: rgba(124, 58, 237, 0.30) !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+.ant-btn:not(.ant-btn-primary):not(.ant-btn-dangerous):active {
+  transform: scale(0.96);
+}
+
+.ant-btn-dangerous {
+  background: rgba(225, 29, 72, 0.07) !important;
+  border-color: rgba(225, 29, 72, 0.22) !important;
+  color: var(--rose) !important;
+  border-radius: var(--radius-md) !important;
+  transition: background 0.2s, transform 0.12s var(--spring) !important;
+}
+
+.ant-btn-dangerous:hover {
+  background: rgba(225, 29, 72, 0.15) !important;
+  transform: translateY(-1px);
+}
+
+.ant-btn-dangerous:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   MODAL — iOS 26 deep dark glass
+   ============================================================ */
+.ant-modal-content {
+  background: rgba(12, 10, 32, 0.82) !important;
+  backdrop-filter: blur(52px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(52px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  border-radius: var(--radius-xl) !important;
+  box-shadow:
+    0 16px 64px rgba(0, 0, 0, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+  animation: fadeScaleIn 0.25s var(--spring);
+}
+
+.ant-modal-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.ant-modal-title {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 700;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+.ant-modal-close {
+  color: rgba(255, 255, 255, 0.45) !important;
+  transition: color 0.2s, transform 0.15s var(--spring);
+}
+
+.ant-modal-close:hover {
+  color: rgba(255, 255, 255, 0.90) !important;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.ant-modal-mask {
+  background: rgba(4, 3, 16, 0.65) !important;
+  backdrop-filter: blur(10px);
+}
+
+.ant-modal .ant-form-item-label>label {
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-weight: 600;
+}
+
+/* ============================================================
+   DRAWER
+   ============================================================ */
+.ant-drawer-content {
+  background: var(--surface-drawer) !important;
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border-left: 1.5px solid var(--glass-border) !important;
+}
+
+.ant-drawer-mask {
+  backdrop-filter: blur(8px);
+  background: rgba(99, 91, 255, 0.10) !important;
+}
+
+
+
+.ant-drawer-header {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+
+
+.ant-drawer-title {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+.ant-drawer-close {
+  color: var(--text-muted) !important;
+  transition: color 0.2s, transform 0.15s var(--spring);
+}
+
+.ant-drawer-close:hover {
+  color: var(--violet) !important;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.ant-drawer-body {
+  background: transparent !important;
+}
+
+.ant-drawer .ant-select-selector {
+  background: var(--surface-2) !important;
+  border-color: var(--glass-border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.ant-message-notice-content {
+  background: var(--surface-2) !important;
+  backdrop-filter: blur(22px);
+  border: 1.5px solid var(--glass-border) !important;
+  border-radius: var(--radius-lg) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-depth) !important;
+  animation: fadeScaleIn 0.2s var(--spring);
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+.ant-progress-text {
+  color: var(--text-primary) !important;
+}
+
+.ant-progress-inner {
+  background: rgba(124, 58, 237, 0.08) !important;
+}
+
+/* ============================================================
+   DASHBOARD / TYPOGRAPHY
+   ============================================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary) !important;
+}
+
+.dashboard-title h2,
+.dashboard-title .ant-typography {
+  color: var(--text-primary) !important;
+  font-weight: 800 !important;
+}
+
+.dashboard-title .ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.analytics-container .ant-card .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-success {
+  color: #059669 !important;
+}
+
+.text-danger {
+  color: var(--rose) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(124, 58, 237, 0.04);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#7c3aed, #06b6d4);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#6d28d9, #0891b2);
+}
+
+/* ============================================================
+   iOS TOGGLE
+   ============================================================ */
+.ios-toggle {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ios-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.ios-toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  /* clip thumb at track edges */
+  background: rgba(120, 120, 128, 0.30);
+  border: 1.5px solid rgba(120, 120, 128, 0.20);
+  transition: background 0.28s, box-shadow 0.28s;
+  cursor: pointer;
+}
+
+
+
+.ios-toggle input:checked+.ios-toggle-track {
+  background: linear-gradient(135deg, #34c759, #30d158);
+  border-color: rgba(52, 199, 89, 0.40);
+  box-shadow: 0 0 14px rgba(52, 199, 89, 0.45);
+}
+
+.ios-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 1);
+  transition: transform 0.28s var(--spring);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ios-toggle input:checked~.ios-toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* ============================================================
+   PROFILE DRAWER — iOS Settings (single category)
+   ============================================================ */
+.settings-section {
+  margin-bottom: 20px;
+}
+
+.settings-section-label {
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 4px 8px 4px;
+}
+
+.settings-group {
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-depth);
+  /* Liquid top shimmer */
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, transparent 35%);
+}
+
+
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 14px;
+  gap: 12px;
+  border-bottom: 1px solid var(--glass-border);
+  transition: background 0.15s, transform 0.12s var(--spring);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row:hover {
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.settings-row:active {
+  background: rgba(124, 58, 237, 0.10);
+  transform: scale(0.99);
+}
+
+.settings-row:active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.14) 0%, transparent 70%);
+  animation: ripple 0.45s var(--ease) forwards;
+}
+
+
+
+.settings-row-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.settings-row-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-row-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.settings-row-subtitle {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.settings-row-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.settings-chevron {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.profile-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 0 18px;
+}
+
+.profile-hero-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 11px;
+  margin-bottom: 2px;
+}
+
+.profile-hero-sub {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+}
+
+
+
+/* Auth split-layout — min-width so right panel stays visible */
+.auth-right-panel {
+  min-width: 360px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE — Tablet ≤ 1024px, Mobile ≤ 768px, Small ≤ 480px
+   ============================================================ */
+
+/* ── Tablet (≤ 1024px) ── */
+@media (max-width: 1024px) {
+
+  /* Sidebar becomes narrower */
+  .home-sidebar {
+    width: 220px !important;
+  }
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+
+  /* ── Header: prevent hamburger overlap ── */
+  .glass-navbar {
+    padding: 0 12px !important;
+  }
+
+  .glass-navbar .container-fluid {
+    padding-left: 50px !important;
+    /* make room for hamburger */
+  }
+
+  .brand-tagline {
+    display: none !important;
+  }
+
+  /* ── Sidebar: off-canvas drawer ── */
+  .home-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    z-index: 9990 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding-top: 72px !important;
+  }
+
+  .home-sidebar.sidebar-open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-overlay {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 9989 !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  /* ── Main content: full width ── */
+  .home-main {
+    padding: 16px 12px 100px !important;
+  }
+
+  /* stat-tiles-grid: handled by JS useIsMobile — no CSS override needed */
+
+  /* ── Analytics: summary cards stack vertically ── */
+  .analytics-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* ── Analytics: breakdown cards stack vertically ── */
+  .analytics-breakdown-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* ── Analytics: smaller circles on mobile ── */
+  .analytics-summary-grid .ant-progress-circle {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  /* ── Mileage: stack calculator + results vertically ── */
+  .mileage-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* ── KhataBook: stack panels vertically ── */
+  .khatabook-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* ── Auth pages ── */
+  .auth-left-panel {
+    display: none !important;
+  }
+
+  .auth-right-panel {
+    width: 100% !important;
+    min-width: unset !important;
+    padding: 24px 20px !important;
+  }
+
+  /* ── Table: horizontal scroll ── */
+  .table-glass-wrap {
+    border-radius: 14px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .table-glass-wrap table {
+    min-width: 600px !important;
+  }
+
+  /* ── Footer ── */
+  .glass-footer {
+    padding: 14px 12px !important;
+  }
+
+  /* ── FAB smaller ── */
+  .fab-btn {
+    width: 56px !important;
+    height: 56px !important;
+    bottom: 24px !important;
+  }
+
+  /* ── Modal ── */
+  .ant-modal {
+    max-width: calc(100vw - 24px) !important;
+    margin: 12px !important;
+  }
+
+  .ant-modal-content {
+    border-radius: 16px !important;
+    padding: 16px !important;
+  }
+}
+
+/* ── Small Mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  .home-main {
+    padding: 12px 8px 100px !important;
+  }
+
+  /* Stat tile compact */
+  .stat-tile {
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .auth-right-panel {
+    padding: 20px 16px !important;
+  }
+
+  /* Table even more compact */
+  .table-glass-wrap table {
+    min-width: 520px !important;
+  }
+
+  .glass-navbar .navbar-brand span.brand-name {
+    font-size: 0.92rem !important;
+  }
+}
+
+/* ============================================================
+   FLOATING ACTION BUTTON — iOS 26 vibrant liquid glass
+   ============================================================ */
+.fab-btn {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #38bdf8 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 8px rgba(99, 102, 241, 0.15),
+    0 8px 32px rgba(99, 102, 241, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.40);
+  transition: box-shadow 0.2s, transform 0.18s var(--spring);
+  backdrop-filter: blur(20px);
+}
+
+.fab-btn:hover {
+  box-shadow:
+    0 0 0 12px rgba(99, 102, 241, 0.18),
+    0 12px 48px rgba(99, 102, 241, 0.70),
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateX(-50%) scale(1.10);
+}
+
+.fab-btn:active {
+  transform: translateX(-50%) scale(0.94);
+}
+
+/* ============================================================
+   TABLE GLASS WRAPPER — iOS 26 liquid glass, single border
+   ============================================================ */
+.table-glass-wrap {
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Remove redundant inner table borders — wrapper provides all borders */
+.table-glass-wrap .ant-table {
+  border: none !important;
+  background: transparent !important;
+}
+
+.table-glass-wrap .ant-table-container {
+  border-inline-start: none !important;
+  border-top: none !important;
+  background: transparent !important;
+}
+
+/* ============================================================
+   NO TRANSFORM ON CARD HOVER — prevents dropdown flicker
+   ============================================================ */
+.ant-card:hover,
+.card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-float) !important;
+}
+
+
+
+/* ============================================================
+   TABLE BORDER FIX — clean single lines, no vertical separators
+   ============================================================ */
+
+/* Nuke all borders on table wrapper internals — our outer wrapper is the only border */
+.table-glass-wrap .ant-table,
+.table-glass-wrap .ant-table-wrapper,
+.table-glass-wrap .ant-table-content,
+.table-glass-wrap .ant-table-container,
+.table-glass-wrap table {
+  border: none !important;
+  border-top: none !important;
+  border-inline-start: none !important;
+}
+
+/* Hide Ant Design's invisible filler column (added to fill remaining width) */
+.table-glass-wrap .ant-table-thead>tr>th.ant-table-cell-scrollbar,
+.table-glass-wrap .ant-table-tbody>tr>td.ant-table-cell-scrollbar {
+  display: none !important;
+}
+
+/* Kill ONLY the pseudo-element resizer/separator lines on th */
+.table-glass-wrap .ant-table-thead>tr>th::before,
+.table-glass-wrap .ant-table-thead>tr>th::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  background: none !important;
+}
+
+/* th: no vertical borders, only a bottom separator under header */
+.table-glass-wrap .ant-table-thead>tr>th {
+  border-right: none !important;
+  border-left: none !important;
+  border-inline: none !important;
+  border-bottom: 1.5px solid var(--glass-border) !important;
+}
+
+/* td: only horizontal row separators, no vertical lines */
+.table-glass-wrap .ant-table-tbody>tr>td {
+  border-bottom: 1px solid var(--glass-border) !important;
+  border-right: none !important;
+  border-left: none !important;
+  border-inline: none !important;
+  border-top: none !important;
+}
+
+/* No border on the last row */
+.table-glass-wrap .ant-table-tbody>tr:last-child>td {
+  border-bottom: none !important;
+}
+
+/* ============================================================
+   FAB CLICKABILITY FIX — lower footer z-index so FAB is on top
+   ============================================================ */
+.glass-footer {
+  position: relative;
+  z-index: 1;
+  /* FAB is z-index 9999 so it stays on top */
+}
+
+
+/* ============================================================
+   iOS 26 PHYSICS ANIMATIONS — All 6 system-level effects
+   ============================================================ */
+
+/* ── 1. SPRING PHYSICS TOKENS ── */
+:root {
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* strong overshoot */
+  --spring-soft: cubic-bezier(0.22, 1.40, 0.36, 1);
+  /* gentle bounce    */
+  --spring-snappy: cubic-bezier(0.25, 1.70, 0.50, 1);
+  /* snappy pop       */
+  --depth-blur-1: blur(8px);
+  --depth-blur-2: blur(24px);
+  --depth-blur-3: blur(48px);
+  --depth-blur-nav: 48px;
+  /* updated by JS scroll listener */
+}
+
+/* ── Spring bounce keyframe (icon/FAB tap) ── */
+@keyframes springBounce {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(0.86);
+  }
+
+  60% {
+    transform: scale(1.18);
+  }
+
+  80% {
+    transform: scale(0.96);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Spring pop–in (elements entering the scene) ── */
+@keyframes springPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.72) translateY(18px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-4px);
+  }
+
+  80% {
+    transform: scale(0.98) translateY(1px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── Staggered card entrance ── */
+@keyframes cardRise {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.94);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Icon spring toggle (list ↔ chart) ── */
+@keyframes iconSpring {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  25% {
+    transform: scale(0.75) rotate(-8deg);
+  }
+
+  65% {
+    transform: scale(1.22) rotate(4deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ── 2. ELASTIC / RUBBER-BAND SCROLL ── */
+html {
+  overscroll-behavior-y: none;
+  /* disable native bounce so we can custom-style */
+}
+
+/* Scrollable content container gets rubber-band momentum */
+.container-fluid {
+  overscroll-behavior-y: contain;
+}
+
+/* Elastic indicator — top rubber-band pulse when hitting ceiling */
+@keyframes rubberBandPulse {
+  0% {
+    transform: scaleY(1);
+  }
+
+  25% {
+    transform: scaleY(1.03) translateY(-6px);
+  }
+
+  60% {
+    transform: scaleY(0.98) translateY(2px);
+  }
+
+  100% {
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+/* ── 3. MODAL LAUNCH ANIMATION (expand from origin) ── */
+@keyframes modalLaunch {
+  0% {
+    opacity: 0;
+    transform: scale(0.62) translateY(40px);
+    filter: blur(12px);
+  }
+
+  55% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-6px);
+    filter: blur(0);
+  }
+
+  75% {
+    transform: scale(0.98) translateY(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.80) translateY(24px);
+    filter: blur(8px);
+  }
+}
+
+@keyframes modalMaskIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(18px);
+  }
+}
+
+/* Ant Design modal override for launch animation */
+.ant-modal-root .ant-modal-wrap {
+  animation: modalMaskIn 0.32s var(--spring-soft) both;
+}
+
+.ant-modal-root .ant-modal {
+  animation: modalLaunch 0.5s var(--spring-bounce) both;
+  transform-origin: center bottom;
+}
+
+/* ── 4. REAL-TIME BLUR — Navbar blur driven by CSS custom property ── */
+/* JS sets --scroll-blur on :root; navbar reads it */
+.glass-navbar {
+  backdrop-filter: blur(var(--scroll-blur, 48px)) saturate(200%);
+  -webkit-backdrop-filter: blur(var(--scroll-blur, 48px)) saturate(200%);
+  background: rgba(10, 8, 32, var(--scroll-nav-opacity, 0.58));
+  transition: backdrop-filter 0.15s linear, background 0.15s linear;
+}
+
+/* ── 5. ENHANCED FROSTED GLASS — Multi-layer specular highlights ── */
+
+/* Stat tiles — spring entrance on load */
+.stat-tile {
+  animation: cardRise 0.6s var(--spring-bounce) both;
+}
+
+.stat-tile:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.stat-tile:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.stat-tile:nth-child(3) {
+  animation-delay: 0.19s;
+}
+
+/* Stat tile hover spring scale */
+.stat-tile {
+  transition: transform 0.35s var(--spring-bounce), box-shadow 0.25s var(--ease);
+  will-change: transform;
+}
+
+.stat-tile:hover {
+  transform: translateY(-4px) scale(1.025);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.40),
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+.stat-tile:active {
+  transform: scale(0.95);
+  transition-duration: 0.12s;
+}
+
+/* Glass card enhanced shimmer layer */
+.glass-card::after,
+.ant-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Frosted glass panel — depth-aware blur levels */
+.glass-depth-1 {
+  backdrop-filter: var(--depth-blur-1) saturate(160%);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.glass-depth-2 {
+  backdrop-filter: var(--depth-blur-2) saturate(180%);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.glass-depth-3 {
+  backdrop-filter: var(--depth-blur-3) saturate(220%);
+  background: rgba(255, 255, 255, 0.13);
+}
+
+/* ── 6. LAYERED TRANSPARENCY DEPTH SYSTEM ── */
+/* Parallax depth layers — JS adds .scrolled class to body */
+.depth-layer-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  transition: transform 0.08s linear;
+}
+
+/* Layer 1 — slowest (deepest) */
+body.scrolled .depth-layer-bg:nth-child(1) {
+  transform: translateY(calc(var(--scroll-pct, 0) * -8px));
+}
+
+/* Ambient orb parallax — orbs move slower than content */
+body::before {
+  will-change: transform;
+  transition: transform 0.12s linear;
+}
+
+body::after {
+  will-change: transform;
+  transition: transform 0.12s linear;
+}
+
+/* ── FAB spring physics ── */
+.fab-spring {
+  transition: transform 0.4s var(--spring-bounce), box-shadow 0.3s var(--ease);
+  will-change: transform;
+}
+
+.fab-spring:hover {
+  transform: translateX(-50%) scale(1.12);
+  box-shadow:
+    0 0 0 12px rgba(99, 102, 241, 0.20),
+    0 12px 40px rgba(99, 102, 241, 0.70),
+    0 4px 12px rgba(0, 0, 0, 0.30);
+}
+
+.fab-spring:active {
+  transform: translateX(-50%) scale(0.88);
+  transition-duration: 0.10s;
+}
+
+/* FAB open state — morphs to X */
+.fab-spring.is-open {
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%) !important;
+  transform: translateX(-50%) rotate(45deg) scale(1.06);
+  box-shadow:
+    0 0 0 10px rgba(239, 68, 68, 0.18),
+    0 12px 36px rgba(239, 68, 68, 0.55);
+}
+
+/* ── Switch icons spring bounce on click ── */
+.switch-icons .active-icon,
+.switch-icons .inactive-icon {
+  transition: transform 0.35s var(--spring-bounce), color 0.2s var(--ease), opacity 0.2s;
+  display: inline-flex;
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.switch-icons .active-icon {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.15);
+  transform: scale(1.18);
+}
+
+.switch-icons .inactive-icon {
+  opacity: 0.45;
+}
+
+.switch-icons .active-icon:active,
+.switch-icons .inactive-icon:active {
+  animation: iconSpring 0.4s var(--spring-snappy) both;
+}
+
+/* ── Table rows spring in ── */
+.ant-table-tbody>tr {
+  animation: cardRise 0.45s var(--spring-soft) both;
+}
+
+.ant-table-tbody>tr:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.ant-table-tbody>tr:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.ant-table-tbody>tr:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.ant-table-tbody>tr:nth-child(4) {
+  animation-delay: 0.16s;
+}
+
+.ant-table-tbody>tr:nth-child(5) {
+  animation-delay: 0.20s;
+}
+
+.ant-table-tbody>tr:nth-child(6) {
+  animation-delay: 0.24s;
+}
+
+.ant-table-tbody>tr:nth-child(7) {
+  animation-delay: 0.27s;
+}
+
+.ant-table-tbody>tr:nth-child(8) {
+  animation-delay: 0.30s;
+}
+
+/* Table row hover lift */
+.ant-table-tbody>tr {
+  transition: transform 0.22s var(--spring-soft), background 0.15s;
+}
+
+.ant-table-tbody>tr:hover>td {
+  transform: translateX(3px);
+}
+
+/* ── Filters bar spring mount ── */
+.filters {
+  animation: cardRise 0.55s var(--spring-bounce) 0.08s both;
+}
+
+/* ── Dashboard header spring ── */
+.dashboard-title {
+  animation: springPopIn 0.6s var(--spring-bounce) both;
+}
+
+/* ── Edit/Delete action button spring ── */
+.action-icon-btn {
+  transition: transform 0.30s var(--spring-bounce), color 0.15s;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+
+.action-icon-btn:hover {
+  transform: scale(1.28);
+}
+
+.action-icon-btn:active {
+  transform: scale(0.82);
+  transition-duration: 0.08s;
+}
+
+/* ── Auth form inputs spring focus ── */
+.auth-right-panel .ant-input:focus,
+.auth-right-panel .ant-input-affix-wrapper:focus-within {
+  transform: scale(1.015);
+  transition: transform 0.30s var(--spring-bounce), box-shadow 0.20s;
+}
+
+/* ── Scroll-progress glow bar at top of page ── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: var(--scroll-progress, 0%);
+  background: linear-gradient(90deg, #6366f1, #38bdf8, #10b981);
+  z-index: 99999;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.70);
+  transition: width 0.08s linear;
+  pointer-events: none;
+}
+
+/* ============================================================
+   ANT DESIGN DARK OVERRIDES — v4 / v5 / v6 compatible
+   ============================================================ */
+
+/* ── Modal ── */
+.ant-modal-content,
+[class*="ant-modal-content"],
+[class*="css-"][class*="modal"] .ant-modal-content {
+  background: rgba(15, 15, 30, 0.97) !important;
+  backdrop-filter: blur(40px) !important;
+  -webkit-backdrop-filter: blur(40px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.70) !important;
+}
+
+.ant-modal .ant-modal-header,
+.ant-modal-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+  margin-bottom: 0 !important;
+}
+
+.ant-modal-title,
+.ant-modal .ant-modal-title {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 700 !important;
+}
+
+.ant-modal-close,
+.ant-modal .ant-modal-close {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.ant-modal-close:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-radius: 8px !important;
+}
+
+.ant-modal .ant-modal-body,
+.ant-modal-body {
+  padding-top: 18px !important;
+}
+
+/* ── Select ── */
+.ant-select-dropdown {
+  background: rgba(16, 16, 32, 0.98) !important;
+  backdrop-filter: blur(32px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.60) !important;
+  overflow: hidden !important;
+  padding: 6px !important;
+}
+
+.ant-select-item {
+  color: rgba(255, 255, 255, 0.75) !important;
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+}
+
+.ant-select-item:hover,
+.ant-select-item-option-active {
+  background: rgba(129, 140, 248, 0.15) !important;
+  color: #fff !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(129, 140, 248, 0.24) !important;
+  color: #818cf8 !important;
+  font-weight: 700 !important;
+}
+
+.ant-select-selector {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.ant-select-arrow {
+  color: rgba(255, 255, 255, 0.40) !important;
+}
+
+.ant-select-selection-placeholder {
+  color: rgba(255, 255, 255, 0.30) !important;
+}
+
+/* ── DatePicker popup ── */
+.ant-picker-dropdown,
+.ant-picker-panel-container {
+  background: rgba(16, 16, 32, 0.98) !important;
+  backdrop-filter: blur(32px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.60) !important;
+  overflow: hidden !important;
+}
+
+.ant-picker-cell-in-view {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: #6366f1 !important;
+  border-radius: 8px !important;
+}
+
+.ant-picker-header,
+.ant-picker-header button {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+
+.ant-picker-content th {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* ── Antd Tag ── */
+.ant-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* ── Progress trail ── */
+.ant-progress-inner {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── Sidebar hydration ── */
+aside::-webkit-scrollbar {
+  display: none;
+}
+
+aside {
+  scrollbar-width: none;
+}
+
+/* ── Native inputs / selects in dark modals ── */
+select,
+textarea,
+input[type="number"],
+input[type="date"],
+input[type="text"] {
+  color-scheme: dark;
+}
+
+select option {
+  background: #12122a !important;
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+
+/* ── Antd Table (unused now but keep to avoid conflicts) ── */
+.ant-table-wrapper {
+  display: none !important;
+}
+
+/* ── Dark theme for Ant Design Modal (image crop) ── */
+.ant-modal-content {
+  background: rgba(15, 12, 35, 0.97) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.60) !important;
+}
+
+.ant-modal-mask {
+  background: rgba(0, 0, 0, 0.70) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.ant-modal-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-modal-title {
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.ant-modal-close {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+
+.ant-modal-close:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-modal-body {
+  background: transparent !important;
+}
+
+.ant-modal-footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-modal-footer .ant-btn {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+}
+
+.ant-modal-footer .ant-btn-default {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: rgba(255, 255, 255, 0.70) !important;
+}
+
+.ant-modal-footer .ant-btn-default:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #fff !important;
+}
+
+.ant-modal-footer .ant-btn-primary {
+  background: linear-gradient(135deg, #6366f1, #38bdf8) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+}
+
+.ant-modal .ant-slider-rail {
+  background: rgba(255, 255, 255, 0.10) !important;
+}
+
+.ant-modal .ant-slider-track {
+  background: #818cf8 !important;
+}
+
+.ant-modal .ant-slider-handle::after {
+  box-shadow: 0 0 0 2px #818cf8 !important;
+}
+
+.ant-modal .ant-slider-handle:hover::after,
+.ant-modal .ant-slider-handle:focus::after {
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.40) !important;
+}
+
+/* Crop area dark background */
+.reactEasyCrop_Container {
+  background: #0a0820 !important;
+}
